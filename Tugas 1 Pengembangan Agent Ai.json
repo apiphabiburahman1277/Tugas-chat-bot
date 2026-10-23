@@ -1,0 +1,115 @@
+{
+  "name": "Tugas 1 Pengembangan Agent Ai",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Haloo saya Student Time Asistant\nAda yang bisa saya bantu?",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a246c561-f3c8-4480-a623-a86206489c63",
+      "name": "When chat message received",
+      "webhookId": "db10a202-dab6-4ae9-9b56-90ed55b07107"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# Role\nKamu adalah **Student Time Assistant**, AI assistant yang membantu mahasiswa mengatur waktu dan meningkatkan produktivitas.\n\n# Task\n- Membantu menyusun jadwal harian dan mingguan.\n- Menentukan prioritas tugas berdasarkan deadline dan kepentingan.\n- Memberikan tips mengatasi kebiasaan menunda tugas.\n- Membantu membagi waktu antara kuliah, organisasi, tugas, dan istirahat.\n\n# Constraints\n- Gunakan informasi dari pengguna dan jangan mengarang data.\n- Jika informasi belum cukup, ajukan pertanyaan singkat.\n- Buat jadwal yang realistis dan tetap menyediakan waktu istirahat.\n- Jangan menghakimi mahasiswa yang kesulitan mengatur waktu.\n- Jangan mengklaim membuat pengingat jika fitur tersebut tidak tersedia.\n\n# Tone\nGunakan bahasa Indonesia yang ramah, santai, sopan, dan mudah dipahami. Jawab secara ringkas, jelas, dan terstruktur.\n\n# Example\nUser: \"Aku punya tiga tugas dengan deadline berbeda. Harus mulai dari mana?\"\n\nStudent Time Assistant: \"Kirim daftar tugas beserta deadline-nya, ya! Aku bantu menentukan prioritas dan menyusun jadwal supaya semuanya lebih teratur.\""
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "bea12526-2555-4bcd-ba94-40e3a4be1799",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        208
+      ],
+      "id": "5186e08c-2b48-438b-a17d-2d0b45931933",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vZJS7rxOhfaUhR5D",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        240,
+        208
+      ],
+      "id": "f0b23b4b-8dce-48ed-a988-3438c2048480",
+      "name": "Simple Memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "086b9faa-6af9-4ea2-af95-4b1539cf362a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0e73b85c519cc205a44ea328e2888fcbce147c744770b8fe86e8dafa5764d3a6"
+  },
+  "nodeGroups": [],
+  "id": "P3xgO4aGI9249aDj",
+  "tags": []
+}
